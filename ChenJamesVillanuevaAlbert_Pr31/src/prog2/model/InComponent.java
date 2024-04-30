@@ -14,9 +14,10 @@ import prog2.vista.CentralUBException;
 public interface InComponent {
     
     /**
-     * Activa el component. El mètode llançarà
-     * una excepció en determinades situacions explicades
-     * a la Taula 1 de l'enunciat de la pràctica.
+     * Activa el component.El mètode llançarà
+        una excepció en determinades situacions explicades
+        a la Taula 1 de l'enunciat de la pràctica.
+     * @throws prog2.vista.CentralUBException
      */
     public void activa() throws CentralUBException;
        

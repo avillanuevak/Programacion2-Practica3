@@ -8,6 +8,6 @@ package prog2.model;
  *
  * @author Albert
  */
-public class Britacola {
+public class Bitacola {
     
 }

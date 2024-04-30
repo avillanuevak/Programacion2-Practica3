@@ -47,9 +47,9 @@ public class PaginaIncidencies extends PaginaBritacola{
     public String toString(){
         String mensaje = "";
         for(String it: llistaIncidencies){
-            mensaje += "Descripció Incidencia: " + it + "\n";
+            mensaje += "Descripcio Incidencia: " + it + "\n";
         }
-        return "# Pàgina Incidencies\n- Dia: " + getnDia() + "\n" + mensaje;
+        return "# Pagina Incidencies\n- Dia: " + getnDia() + "\n" + mensaje;
     }
     
     

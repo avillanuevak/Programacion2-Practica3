@@ -8,6 +8,8 @@ package prog2.vista;
  *
  * @author Albert
  */
-public class CentralUBException {
-    
+public class CentralUBException extends Exception {
+    public CentralUBException(String message) {
+        super(message);
+    }
 }
