@@ -6,7 +6,7 @@ package prog2.model;
 
 /**
  *
- * @author Albert
+ * @author Albert Villanueva
  */
 public class Bitacola {
     

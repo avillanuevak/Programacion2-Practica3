@@ -90,4 +90,9 @@ public class BombaRefrigerant implements InBombaRefrigerant{
     public boolean getForaDeServei(){
         return foraDeServei;
     }
+    
+    @Override
+    public String toString(){
+        return "Bomba Refrigerant: Id = " + this.getId() + ", Activitat = " + this.getActivat() + ", Fora de servei = " + this.getForaDeServei();
+    }
 }
