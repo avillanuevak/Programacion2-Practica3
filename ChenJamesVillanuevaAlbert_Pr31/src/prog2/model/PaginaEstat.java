@@ -8,7 +8,7 @@ package prog2.model;
  *
  * @author Albert
  */
-public class PaginaEstat extends PaginaBritacola {
+public class PaginaEstat extends PaginaBitacola {
 
     int nDia;
     double demandaPotEnergetica;

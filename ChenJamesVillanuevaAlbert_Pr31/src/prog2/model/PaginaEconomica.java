@@ -8,6 +8,8 @@ package prog2.model;
  *
  * @author Albert
  */
-public class PaginaEconomica {
-    
+public class PaginaEconomica extends PaginaBitacola{
+    private float beneficis;
+    private float penalitzacioExcessProduccio;
+    private float costOperatiu;
 }

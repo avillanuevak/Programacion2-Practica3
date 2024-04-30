@@ -10,10 +10,15 @@ import java.util.ArrayList;
  *
  * @author Albert
  */
-public class PaginaIncidencies extends PaginaBritacola{
+public class PaginaIncidencies extends PaginaBitacola{
     int nDia;
     ArrayList<String> llistaIncidencies;
 
+    public PaginaIncidencies(){
+    llistaIncidencies = new ArrayList<>(); 
+    nDia = 0;
+    }
+        
     public int getnDia() {
         return nDia;
     }
@@ -28,11 +33,6 @@ public class PaginaIncidencies extends PaginaBritacola{
 
     public void setLlistaIncidencies(ArrayList<String> llistaIncidencies) {
         this.llistaIncidencies = llistaIncidencies;
-    }
-    
-    public PaginaIncidencies(){
-        llistaIncidencies = new ArrayList<>(); 
-        nDia = 0;
     }
     
     public PaginaIncidencies(int nDia, ArrayList<String> llistaIncidencies){

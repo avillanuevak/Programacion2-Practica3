@@ -30,6 +30,7 @@ public class BombaRefrigerant implements InBombaRefrigerant{
         return id;
     }
     
+    
     /**
      * Activa la bomba refrigerant.El mètode llançarà una excepció si la bomba 
         està fora de servei i en aquest cas la bomba no es podrà activar.
