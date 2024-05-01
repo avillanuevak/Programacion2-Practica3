@@ -6,7 +6,7 @@ package prog2.model;
 
 /**
  *
- * @author Albert
+ * @author Albert Villanueva
  */
 public class PaginaEstat extends PaginaBitacola {
 
@@ -17,7 +17,7 @@ public class PaginaEstat extends PaginaBitacola {
     double oSistemaRefrigeracio;
     double oGeneradorVapor;
     double oTurbina;
-    double demandaSatisfeta; //falta un método para calcular la demanda satisfeta
+    double demandaSatisfeta; 
 
     public PaginaEstat() {
     }
@@ -30,7 +30,7 @@ public class PaginaEstat extends PaginaBitacola {
         this.oSistemaRefrigeracio = oSistemaRefrigeracio;
         this.oGeneradorVapor = oGeneradorVapor;
         this.oTurbina = oTurbina;
-        //this.demandaSatisfeta = 
+        this.demandaSatisfeta = (oTurbina/demandaPotEnergetica) * 100 ;
     }
 
     public int getnDia() {
@@ -97,11 +97,11 @@ public class PaginaEstat extends PaginaBitacola {
         this.demandaSatisfeta = demandaSatisfeta;
     }
     
-    
     @Override
     public String toString() {
-        return "# Pàgina Estat\n"
-                + "- Dia: " + getnDia() +"\n"
+        return """
+               # Pagina Estat
+               - Dia: """ + getnDia() +"\n"
                 + "- Demanda de potencia: " + this.getDemandaPotEnergetica()+ "\n"
                 + "- Inserció Barres: " + this.getInsercioBarres() + "%\n"
                 + "- Output Reactor: "+ this.getoReactor() +" Graus\n"

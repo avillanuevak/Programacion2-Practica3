@@ -45,9 +45,7 @@ public class Turbina implements InComponent{
      */
     @Override
     public void desactiva(){
-        if(this.isActivat()) this.setActivat(false);
-        
-        
+        if(this.isActivat()) this.setActivat(false); 
     }
     
     /**

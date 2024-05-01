@@ -6,7 +6,7 @@ package prog2.model;
 
 /**
  *
- * @author Albert
+ * @author Albert Villanueva
  */
 public class PaginaBitacola {
     
@@ -18,6 +18,6 @@ public class PaginaBitacola {
     
     @Override
     public String toString(){
-        return "Pagina bitacola\n\n" + new PaginaEconomica().toString() + new PaginaEstat().toString() + new PaginaIncidencies().toString();
+        return "";
     }
 }

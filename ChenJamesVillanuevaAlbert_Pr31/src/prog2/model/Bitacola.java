@@ -46,10 +46,7 @@ public class Bitacola implements InBitacola{
     @Override
     public List<PaginaIncidencies> getIncidencies(){
         List<PaginaIncidencies> llistaIncidencies;
-        Iterator<PaginaIncidencies> it = getLlistaIncidencies().Iterator();
-        llistaIncidencies.add((PaginaIncidencies) it);
         
-        return llistaIncidencies;
     }
     
     @Override

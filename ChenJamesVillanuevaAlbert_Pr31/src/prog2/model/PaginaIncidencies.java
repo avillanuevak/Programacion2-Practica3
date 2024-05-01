@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Albert
+ * @author James Chen
  */
 public class PaginaIncidencies extends PaginaBitacola{
     int nDia;
@@ -47,11 +47,8 @@ public class PaginaIncidencies extends PaginaBitacola{
     public String toString(){
         String mensaje = "";
         for(String it: llistaIncidencies){
-            mensaje += "Descripcio Incidencia: " + it + "\n";
+            mensaje += "- Descripcio Incidencia: " + it + "\n";
         }
         return "# Pagina Incidencies\n- Dia: " + getnDia() + "\n" + mensaje;
     }
-    
-    
-
 }

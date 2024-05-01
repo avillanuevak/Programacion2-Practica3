@@ -4,6 +4,8 @@
  */
 package prog2.model;
 
+import prog2.vista.CentralUBException;
+
 /**
  *
  * @author dortiz
@@ -26,7 +28,7 @@ public class Dades {
     private float guanysAcumulats;
     
     
-    public Dades(){
+    public Dades() throws CentralUBException{
         // Inicialitza Atributs
         this.variableUniforme = new VariableUniforme(VAR_UNIF_SEED);
         this.insercioBarres = 100;
@@ -60,7 +62,28 @@ public class Dades {
      * @param demandaPotencia Demanda de potència actual.
      */
     private PaginaEconomica actualitzaEconomia(float demandaPotencia){
-        // Completar 
+        /*Beneficis*/
+        float output, penalitzacio = 0, beneficis;
+        float outputRaw = turbina.calculaOutput(demandaPotencia);
+        
+        output = (outputRaw >= demandaPotencia) ? demandaPotencia : outputRaw;
+        beneficis = output * PREU_UNITAT_POTENCIA;
+        
+        /*Penalitzacio*/
+        if(output >= demandaPotencia) penalitzacio = PENALITZACIO_EXCES_POTENCIA;
+        
+        /*Costos Operatius*/
+        
+        float costosOperatius = reactor.getCostOperatiu() + sistemaRefrigeracio.getCostOperatiu() + generadorVapor.getCostOperatiu() + 
+                turbina.getCostOperatiu();
+        
+        /*Guanys Acumulats*/
+        guanysAcumulats += beneficis - penalitzacio - costosOperatius;
+        
+        /*Crear pagina economica*/
+        PaginaEconomica paginaEconomica = new PaginaEconomica(dia, beneficis, costosOperatius, penalitzacio, guanysAcumulats);
+        
+        return paginaEconomica;
     }
     
     /**
