@@ -4,19 +4,22 @@
  */
 package prog2.model;
 
+import java.util.List;
 import prog2.vista.CentralUBException;
 
 /**
  *
  * @author dortiz
  */
-public class Dades {
+public class Dades implements InDades{
     public final static long  VAR_UNIF_SEED = 123;
     public final static float GUANYS_INICIALS = 0;
     public final static float PREU_UNITAT_POTENCIA = 1;
     public final static float PENALITZACIO_EXCES_POTENCIA = 200;
 
     // Afegir atributs:
+    
+    
     private VariableUniforme variableUniforme;
     private int insercioBarres;
     private Reactor reactor;
@@ -61,7 +64,10 @@ public class Dades {
      * guanys acumulats.
      * @param demandaPotencia Demanda de potència actual.
      */
+    
+    
     private PaginaEconomica actualitzaEconomia(float demandaPotencia){
+
         /*Beneficis*/
         float output, penalitzacio = 0, beneficis;
         float outputRaw = turbina.calculaOutput(demandaPotencia);
@@ -73,9 +79,13 @@ public class Dades {
         if(output >= demandaPotencia) penalitzacio = PENALITZACIO_EXCES_POTENCIA;
         
         /*Costos Operatius*/
+        float costosOperatius = 0;
         
-        float costosOperatius = reactor.getCostOperatiu() + sistemaRefrigeracio.getCostOperatiu() + generadorVapor.getCostOperatiu() + 
-                turbina.getCostOperatiu();
+        if(reactor.isActivat()) costosOperatius += reactor.getCostOperatiu();
+        if(generadorVapor.isActivat()) costosOperatius += generadorVapor.getCostOperatiu();
+        if(turbina.isActivat()) costosOperatius += turbina.getCostOperatiu();
+        costosOperatius += sistemaRefrigeracio.getCostOperatiu();
+                
         
         /*Guanys Acumulats*/
         guanysAcumulats += beneficis - penalitzacio - costosOperatius;
@@ -123,4 +133,99 @@ public class Dades {
         bitacolaDia.afegeixPagina(paginaIncidencies);
         return bitacolaDia;
     }
+
+    
+    /**
+     * Retorna el grau d'inserció de les barres de control en percentatge.
+     */
+    @Override
+    public float getInsercioBarres(){
+    
+    }
+    
+    /**
+     * Estableix el grau d'inserció de les barres de control en percentatge.
+     * @param insercioBarres Percentatge d'inserció de les barres de control.
+     */
+    public void setInsercioBarres(float insercioBarres) throws CentralUBException{
+        
+    }
+     
+    /**
+     * Activa el reactor de la central.
+     */
+    public void activaReactor() throws CentralUBException{
+        
+    }
+
+    /**
+     * Desactiva el reactor de la central.
+     */
+    public void desactivaReactor(){
+        
+    }
+    
+    /**
+     * Retorna l'objecte que contè el reactor de la central.
+     */
+    public Reactor mostraReactor(){
+        
+    }
+    
+    /**
+     * Activa una bomba refrigerant amb Id donat com a paràmetre.
+     * @param id Identificador de la bomba que es vol activar.
+     */
+    public void activaBomba(int id) throws CentralUBException{
+        
+    }
+    
+    /**
+     * Desactiva una bomba refrigerant amb Id donat com a paràmetre.
+     * @param id Identificador de la bomba que es vol activar.
+     */
+    public void desactivaBomba(int id){
+        
+    }
+    
+    /**
+     * Retorna l'objecte que contè el sistema de refrigeració de la central.
+     */
+    public SistemaRefrigeracio mostraSistemaRefrigeracio(){
+        
+    }
+    
+    /**
+     * Retorna la potència generada per la central. Aquesta potència es 
+     * l'output de la turbina. Es pot consultar la Figura 2 a l'enunciat per
+     * veure els detalls.
+     */
+    public float calculaPotencia(){
+        
+    }
+    
+    /**
+     * Retorna una pàgina de estat per a la configuració actual de la central.
+     * Amb aquest propòsit és necessari coneixer la demanda de potència actual.
+     * @param demandaPotencia Demanda de potència actual.
+     */
+    public PaginaEstat mostraEstat(float demandaPotencia){
+        
+    }
+      
+    /**
+     * Retorna la bitacola de la central.
+     */
+    public Bitacola mostraBitacola(){
+        
+    }
+    
+    /**
+     * Retorna una llista amb totes les pàgines d'incidències de la bitàcola de
+     * la central.
+     */
+    public List<PaginaIncidencies> mostraIncidencies(){
+        
+    }
+   
 }
