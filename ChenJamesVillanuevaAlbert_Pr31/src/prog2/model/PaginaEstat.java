@@ -10,20 +10,19 @@ package prog2.model;
  */
 public class PaginaEstat extends PaginaBitacola {
 
-    int nDia;
-    double demandaPotEnergetica;
-    double insercioBarres;
-    double oReactor;
-    double oSistemaRefrigeracio;
-    double oGeneradorVapor;
-    double oTurbina;
-    double demandaSatisfeta; 
+    int dia;
+    float demandaPotEnergetica;
+    float insercioBarres;
+    float oReactor;
+    float oSistemaRefrigeracio;
+    float oGeneradorVapor;
+    float oTurbina;
+    float demandaSatisfeta; 
 
-    public PaginaEstat() {
-    }
+    public PaginaEstat() {}
 
-    public PaginaEstat(int nDia, double demandaPotEnergetica, double insercioBarres, double oReactor, double oSistemaRefrigeracio, double oGeneradorVapor, double oTurbina) {
-        this.nDia = nDia;
+    public PaginaEstat(int dia, float demandaPotEnergetica, float insercioBarres, float oReactor, float oSistemaRefrigeracio, float oGeneradorVapor, float oTurbina) {
+        this.dia = dia;
         this.demandaPotEnergetica = demandaPotEnergetica;
         this.insercioBarres = insercioBarres;
         this.oReactor = oReactor;
@@ -33,67 +32,67 @@ public class PaginaEstat extends PaginaBitacola {
         this.demandaSatisfeta = (oTurbina/demandaPotEnergetica) * 100 ;
     }
 
-    public int getnDia() {
-        return nDia;
+    public int getDia() {
+        return dia;
     }
 
-    public void setnDia(int nDia) {
-        this.nDia = nDia;
+    public void setDia(int dia) {
+        this.dia = dia;
     }
 
-    public double getDemandaPotEnergetica() {
+    public float getDemandaPotEnergetica() {
         return demandaPotEnergetica;
     }
 
-    public void setDemandaPotEnergetica(double demandaPotEnergetica) {
+    public void setDemandaPotEnergetica(float demandaPotEnergetica) {
         this.demandaPotEnergetica = demandaPotEnergetica;
     }
 
-    public double getInsercioBarres() {
+    public float getInsercioBarres() {
         return insercioBarres;
     }
 
-    public void setInsercioBarres(double insercioBarres) {
+    public void setInsercioBarres(float insercioBarres) {
         this.insercioBarres = insercioBarres;
     }
 
-    public double getoReactor() {
+    public float getoReactor() {
         return oReactor;
     }
 
-    public void setoReactor(double oReactor) {
+    public void setoReactor(float oReactor) {
         this.oReactor = oReactor;
     }
 
-    public double getoSistemaRefrigeracio() {
+    public float getoSistemaRefrigeracio() {
         return oSistemaRefrigeracio;
     }
 
-    public void setoSistemaRefrigeracio(double oSistemaRefrigeracio) {
+    public void setoSistemaRefrigeracio(float oSistemaRefrigeracio) {
         this.oSistemaRefrigeracio = oSistemaRefrigeracio;
     }
 
-    public double getoGeneradorVapor() {
+    public float getoGeneradorVapor() {
         return oGeneradorVapor;
     }
 
-    public void setoGeneradorVapor(double oGeneradorVapor) {
+    public void setoGeneradorVapor(float oGeneradorVapor) {
         this.oGeneradorVapor = oGeneradorVapor;
     }
 
-    public double getoTurbina() {
+    public float getoTurbina() {
         return oTurbina;
     }
 
-    public void setoTurbina(double oTurbina) {
+    public void setoTurbina(float oTurbina) {
         this.oTurbina = oTurbina;
     }
 
-    public double getDemandaSatisfeta() {
+    public float getDemandaSatisfeta() {
         return demandaSatisfeta;
     }
 
-    public void setDemandaSatisfeta(double demandaSatisfeta) {
+    public void setDemandaSatisfeta(float demandaSatisfeta) {
         this.demandaSatisfeta = demandaSatisfeta;
     }
     
@@ -101,7 +100,7 @@ public class PaginaEstat extends PaginaBitacola {
     public String toString() {
         return """
                # Pagina Estat
-               - Dia: """ + getnDia() +"\n"
+               - Dia: """ + getDia() +"\n"
                 + "- Demanda de potencia: " + this.getDemandaPotEnergetica()+ "\n"
                 + "- Inserció Barres: " + this.getInsercioBarres() + "%\n"
                 + "- Output Reactor: "+ this.getoReactor() +" Graus\n"

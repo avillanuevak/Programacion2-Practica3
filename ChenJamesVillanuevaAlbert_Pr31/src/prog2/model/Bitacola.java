@@ -44,8 +44,11 @@ public class Bitacola implements InBitacola{
      */
     @Override
     public List<PaginaIncidencies> getIncidencies(){
-        List<PaginaIncidencies> llistaIncidencies;
-        
+        List<PaginaIncidencies> llistaIncidencies = null;
+        for(PaginaBitacola pb : getLlistaPaginaBitacola()){
+            if(pb instanceof PaginaIncidencies) llistaIncidencies.add((PaginaIncidencies) pb);
+        }
+        return llistaIncidencies;
     }
     
     @Override

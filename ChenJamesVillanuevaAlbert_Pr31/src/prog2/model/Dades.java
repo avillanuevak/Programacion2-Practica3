@@ -104,9 +104,13 @@ public class Dades implements InDades{
      * @param paginaIncidencies Pàgina d'incidències.
      */
     private void actualitzaEstatCentral(PaginaIncidencies paginaIncidencies) {
-        // Completar
+        reactor.revisa(paginaIncidencies);
+        sistemaRefrigeracio.revisa(paginaIncidencies);
+        generadorVapor.revisa(paginaIncidencies);
+        turbina.revisa(paginaIncidencies);   
     }
     
+    @Override
     public Bitacola finalitzaDia(float demandaPotencia) {
         // Actualitza economia
         PaginaEconomica paginaEconomica = actualitzaEconomia(demandaPotencia);
@@ -137,95 +141,128 @@ public class Dades implements InDades{
     
     /**
      * Retorna el grau d'inserció de les barres de control en percentatge.
+     * @return 
      */
     @Override
     public float getInsercioBarres(){
-    
+        return insercioBarres;
     }
     
     /**
      * Estableix el grau d'inserció de les barres de control en percentatge.
      * @param insercioBarres Percentatge d'inserció de les barres de control.
+     * @throws prog2.vista.CentralUBException
      */
+    @Override
     public void setInsercioBarres(float insercioBarres) throws CentralUBException{
-        
+        this.insercioBarres = (int) (float) insercioBarres;
     }
      
     /**
      * Activa el reactor de la central.
+     * @throws prog2.vista.CentralUBException
      */
+    @Override
     public void activaReactor() throws CentralUBException{
-        
+        reactor.activa();
     }
 
     /**
      * Desactiva el reactor de la central.
      */
+    @Override
     public void desactivaReactor(){
-        
+        reactor.desactiva();
     }
     
     /**
      * Retorna l'objecte que contè el reactor de la central.
+     * @return 
      */
+    @Override
     public Reactor mostraReactor(){
-        
+        return reactor;
     }
     
     /**
      * Activa una bomba refrigerant amb Id donat com a paràmetre.
      * @param id Identificador de la bomba que es vol activar.
+     * @throws prog2.vista.CentralUBException
      */
+    @Override
     public void activaBomba(int id) throws CentralUBException{
-        
+        for(BombaRefrigerant b : sistemaRefrigeracio.getSistemaRefrigeracio()){
+            if(b.getId() == id) b.activa();
+        }
     }
     
     /**
      * Desactiva una bomba refrigerant amb Id donat com a paràmetre.
      * @param id Identificador de la bomba que es vol activar.
      */
+    @Override
     public void desactivaBomba(int id){
-        
+        for(BombaRefrigerant b : sistemaRefrigeracio.getSistemaRefrigeracio()){
+            if(b.getId() == id) b.desactiva();
+        }
     }
     
     /**
      * Retorna l'objecte que contè el sistema de refrigeració de la central.
+     * @return 
      */
+    @Override
     public SistemaRefrigeracio mostraSistemaRefrigeracio(){
-        
+        return this.sistemaRefrigeracio;
     }
     
     /**
      * Retorna la potència generada per la central. Aquesta potència es 
      * l'output de la turbina. Es pot consultar la Figura 2 a l'enunciat per
      * veure els detalls.
+     * @return
      */
+    @Override
     public float calculaPotencia(){
-        
+        return turbina.calculaOutput(generadorVapor.calculaOutput(sistemaRefrigeracio.calculaOutput(reactor.calculaOutput(getInsercioBarres()))));
     }
     
     /**
      * Retorna una pàgina de estat per a la configuració actual de la central.
      * Amb aquest propòsit és necessari coneixer la demanda de potència actual.
      * @param demandaPotencia Demanda de potència actual.
+     * @return
      */
+    @Override
     public PaginaEstat mostraEstat(float demandaPotencia){
         
+        PaginaEstat paginaEstat = new PaginaEstat(dia, demandaPotencia, getInsercioBarres(), reactor.calculaOutput(getInsercioBarres()),
+                                sistemaRefrigeracio.calculaOutput(reactor.getTemperaturaReactor()),
+                                generadorVapor.calculaOutput(sistemaRefrigeracio.calculaOutput(reactor.calculaOutput(getInsercioBarres()))),
+                                turbina.calculaOutput(generadorVapor.calculaOutput(sistemaRefrigeracio.calculaOutput(reactor.calculaOutput(getInsercioBarres())))));
+        return paginaEstat;
     }
       
     /**
      * Retorna la bitacola de la central.
+     * @return
      */
+    @Override
     public Bitacola mostraBitacola(){
-        
+           return this.bitacola;
     }
     
     /**
      * Retorna una llista amb totes les pàgines d'incidències de la bitàcola de
      * la central.
+     * @return
      */
+    @Override
     public List<PaginaIncidencies> mostraIncidencies(){
-        
+        List<PaginaIncidencies> llistaPaginaIncidencies = null;
+        for(PaginaIncidencies pi : bitacola.getIncidencies()){
+            llistaPaginaIncidencies.add(pi);
+        }
+        return llistaPaginaIncidencies;
     }
-   
 }

@@ -11,20 +11,20 @@ import java.util.ArrayList;
  * @author James Chen
  */
 public class PaginaIncidencies extends PaginaBitacola{
-    int nDia;
+    int dia;
     ArrayList<String> llistaIncidencies;
 
-    public PaginaIncidencies(){
-    llistaIncidencies = new ArrayList<>(); 
-    nDia = 0;
+    public PaginaIncidencies(int dia){
+    this.llistaIncidencies = new ArrayList<>(); 
+    this.dia = dia;
     }
         
-    public int getnDia() {
-        return nDia;
+    public int getDia() {
+        return dia;
     }
 
-    public void setnDia(int nDia) {
-        this.nDia = nDia;
+    public void setDia(int dia) {
+        this.dia = dia;
     }
 
     public ArrayList<String> getLlistaIncidencies() {
@@ -35,8 +35,8 @@ public class PaginaIncidencies extends PaginaBitacola{
         this.llistaIncidencies = llistaIncidencies;
     }
     
-    public PaginaIncidencies(int nDia, ArrayList<String> llistaIncidencies){
-        this.nDia = nDia;
+    public PaginaIncidencies(int dia, ArrayList<String> llistaIncidencies){
+        this.dia = dia;
         this.llistaIncidencies = llistaIncidencies;
     }
     
@@ -49,6 +49,6 @@ public class PaginaIncidencies extends PaginaBitacola{
         for(String it: llistaIncidencies){
             mensaje += "- Descripcio Incidencia: " + it + "\n";
         }
-        return "# Pagina Incidencies\n- Dia: " + getnDia() + "\n" + mensaje;
+        return "# Pagina Incidencies\n- Dia: " + getDia() + "\n" + mensaje;
     }
 }

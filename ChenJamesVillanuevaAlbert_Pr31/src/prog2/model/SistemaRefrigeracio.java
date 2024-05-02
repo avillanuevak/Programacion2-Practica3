@@ -15,10 +15,18 @@ import prog2.vista.CentralUBException;
  */
 public class SistemaRefrigeracio implements InComponent{
     
-    private ArrayList sistemaRefrigeracio;
+    private ArrayList<BombaRefrigerant> sistemaRefrigeracio;
     
     public SistemaRefrigeracio(){
-        this.sistemaRefrigeracio = new ArrayList<BombaRefrigerant>();
+        this.sistemaRefrigeracio = new ArrayList<>();
+    }
+
+    public ArrayList<BombaRefrigerant> getSistemaRefrigeracio() {
+        return sistemaRefrigeracio;
+    }
+
+    public void setSistemaRefrigeracio(ArrayList<BombaRefrigerant> sistemaRefrigeracio) {
+        this.sistemaRefrigeracio = sistemaRefrigeracio;
     }
     
    /**
