@@ -4,6 +4,8 @@
  */
 package prog2.vista;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import prog2.adaptador.Adaptador;
 
 /**
@@ -44,29 +46,26 @@ public class CentralUB {
         System.out.println("*****Menu d'opcions*****");
         
         Scanner sc = new Scanner(System.in);
-        enum MenuPrincipal{OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12, OPSORTIR}
+        enum MenuPrincipal{OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OPSORTIR}
         MenuPrincipal[] opcionsPrincipals = MenuPrincipal.values(); //Converteix l'enum en un array de constants
         Menu<MenuPrincipal> menu = new Menu<>("MENU PRINCIPAL",opcionsPrincipals); //Defineix el menu amb el nom d'estacio i l'array d'opcions
         
-        String[] descripcionsPrincipal = {"",
-                                               "",
-                                               "Llistar la informacio de les vies tancades",
-                                               "Llistar la informacio dels accessos oberts", 
-                                               "Llistar la informacio dels accessos tancats",
-                                               "Llistar la informacio de les incidencies actuals", 
-                                               "Afegir una incidencia", 
-                                               "Eliminar una incidencia", 
-                                               "Calcular i mostrar el numero total d'accessos que proporcionen accessibilitat", 
-                                               "Calcular i mostrar el numero total de metres de longitud d'accessos de nivell", 
-                                               "Guardar estacio", 
-                                               "Recuperar estacio", 
-                                               "Sortir de l'aplicacio"};
-        
-        String[] descripcionsSecundari1={};
+        String[] descripcionsPrincipal = {
+                                               "Gestió Barres de Control",
+                                               "Gestió Reactor",
+                                               "Gestió Sistema Refrigeració", 
+                                               "Mostrar Estat Central",
+                                               "Mostrar Bitàcola", 
+                                               "Mostrar Incidències", 
+                                               "Finalitzar Dia", 
+                                               "Guardar Dades", 
+                                               "Carrega Dades", 
+                                               "Sortir"};
+               
         
         
         menu.setDescripcions(descripcionsPrincipal);
-        MenuPrincipal op = null;
+        MenuPrincipal op;
         do{
             menu.mostrarMenu(); //Mostrar menu
             op = menu.getOpcio(sc);
@@ -74,60 +73,201 @@ public class CentralUB {
             switch(op){
                 
                 case OP1:
-
-                    
+                    subMenuBarres(sc);
                     break;
                 
                 case OP2:
-
+                    subMenuReactor(sc);
                     break;
                 
                 case OP3:
-
+                    subMenuRefrigeracio(sc);
                     break;
                     
                 case OP4:
-
+                    try{
+                        System.out.println(adaptador.mostrarEstatCentral(generaDemandaPotencia()));
+                    }catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
                     
                 case OP5:
-
+                    try{
+                        System.out.println(adaptador.mostrarBitacola());
+                    }catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
                     
                 case OP6:
-
+                    try{
+                        System.out.println(adaptador.mostrarIncidencias());
+                    }catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
                     
                 case OP7:
-     
-                    
+                    finalitzaDia();
+                    System.out.println("Dia Finalitzat");       
                     break;
                     
                 case OP8:
-    
+                    adaptador.guardaDades(camiDesti);
                     break;
                     
                 case OP9:
+                    adaptador.carregaDades(camiOrigen);
                     break;
-                    
-                case OP10:
-                    break;
-                    
-                case OP11:
-                    
-                    break;
-                    
-                case OP12:
-                    
-                    
+
                 case OPSORTIR:
-                    System.out.println("Sortint del menu de gestio de l'estacio");
+                    System.out.println("Sortint del menu principal");
                     break;
             }
         }while(op != MenuPrincipal.OPSORTIR);
     }
     
+    public void subMenuBarres(Scanner sc){
+        enum MenuSecundari{OP1, OP2, OPSORTIR}
+        MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
+        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        String[] descripcionsBarres={"Obtenir Insersió Barres", "Establir Inserció Barres", "Sortir"};
+        menu.setDescripcions(descripcionsBarres);
+        MenuSecundari op;
+
+        do{
+            menu.mostrarMenu();
+            op = menu.getOpcio(sc);
+            
+            switch(op){
+                case OP1:
+                    System.out.println(adaptador.getBarres());
+                    break;
+                    
+                case OP2:
+                    System.out.println("Dime el porcentaje que quieres insertar");
+                    float insertar = sc.nextFloat();
+                
+                    try {
+                        adaptador.insertarBarres(insertar);
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                    
+                 case OPSORTIR:
+                    System.out.println("Sortint del menu principal");
+                    break;
+            }
+        }while(op != MenuSecundari.OPSORTIR);
+
+    }
     
+    public void subMenuReactor(Scanner sc){
+        enum MenuSecundari{OP1, OP2, OP3, OPSORTIR}
+        MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
+        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        String[] descripcionsReactor={"Activar Reactor", "Desactivar Reactor", "Mostrar Estat", "Sortir"};
+        menu.setDescripcions(descripcionsReactor);
+        MenuSecundari op;
+
+        do{
+            menu.mostrarMenu();
+            op = menu.getOpcio(sc);
+            
+            switch(op){
+                case OP1:
+                    try {
+                        adaptador.activarReactor();
+                        System.out.println("Reactor Activat");
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                    
+                case OP2:
+                    try {
+                        adaptador.desactivarReactor();
+                        System.out.println("Reactor Desactivat");
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                    
+                case OP3:
+                    try {
+                        System.out.println(adaptador.mostrarEstatReactor());
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;                    
+                    
+                 case OPSORTIR:
+                    System.out.println("Sortint del menu principal");
+                    break;
+            }
+        }while(op != MenuSecundari.OPSORTIR);
+
+    }
+    
+        public void subMenuRefrigeracio(Scanner sc){
+        enum MenuSecundari{OP1, OP2, OP3, OPSORTIR}
+        MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
+        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        String[] descripcionsRefrigeracio={"Activar Bomba", "Desactivar Bomba", "Mostrar Estat", "Sortir"};
+        menu.setDescripcions(descripcionsRefrigeracio);
+        MenuSecundari op;
+        int numero;
+
+        do{
+            menu.mostrarMenu();
+            op = menu.getOpcio(sc);
+            
+            
+            switch(op){
+                case OP1:
+                    try {
+                        
+                        numero = sc.nextInt();
+                        adaptador.activarBomba(numero);
+                        System.out.println("Bomba " + numero +" Activat");
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                    
+                case OP2:
+                    try {
+                        numero = sc.nextInt();
+                        adaptador.desactivarBomba(numero);
+                        System.out.println("Bomba "+ numero + " Desactivat");
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                    
+                case OP3:
+                    try {
+                        System.out.println(adaptador.mostrarEstatBombes());
+                        
+                    } catch (CentralUBException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;                    
+                    
+                 case OPSORTIR:
+                    System.out.println("Sortint del menu principal");
+                    break;
+            }
+        }while(op != MenuSecundari.OPSORTIR);
+
+    }
     
     private float generaDemandaPotencia(){
         float valor = Math.round(variableNormal.seguentValor());

@@ -20,11 +20,62 @@ import prog2.vista.CentralUBException;
 public class Adaptador implements Serializable{
     private Dades dades;
     
-    public Adaptador(){}
+    public Adaptador() throws CentralUBException{
+        dades = new Dades();
+    }
     
     /**
      * Mètodes de persistència de dades
+     * @param b
+     * @throws prog2.vista.CentralUBException
      */
+    public void insertarBarres(float b) throws CentralUBException{
+        dades.setInsercioBarres(b);
+    }
+    public float getBarres(){ 
+        return dades.getInsercioBarres();
+    }
+    public void activarReactor() throws CentralUBException{
+        dades.activaReactor();
+    }
+    public void desactivarReactor() throws CentralUBException{
+        dades.desactivaReactor();
+    }
+    public String mostrarEstatReactor() throws CentralUBException{
+        return dades.mostraReactor().toString();
+    }
+    public void activarBomba(int id) throws CentralUBException{
+        dades.activaBomba(id);
+    }
+    public void desactivarBomba(int id) throws CentralUBException{
+        dades.desactivaBomba(id);
+    }
+    public String mostrarEstatBombes() throws CentralUBException{
+        return dades.mostraSistemaRefrigeracio().toString();
+    }
+    
+    /*
+    "Mostrar Estat Central",
+                                               "Mostrar Bitàcola", 
+                                               "Mostrar Incidències", 
+                                               "Finalitzar Dia", 
+                                               "Guardar Dades", 
+                                               "Carrega Dades", 
+    */
+    
+    public String mostrarEstatCentral(int potencia) throws CentralUBException{
+        return dades.mostraEstat(potencia).toString();
+    }
+
+    
+    public String mostrarBitacola () throws CentralUBException{
+        return dades.mostraBitacola().toString();
+    }
+    
+    public String mostrarIncidencias () throws CentralUBException{
+        return dades.mostraIncidencies().toString();
+    }
+    public 
     
     /**
      * Mètode per guardar la classe EstacioTren

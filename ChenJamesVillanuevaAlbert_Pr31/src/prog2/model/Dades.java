@@ -265,4 +265,8 @@ public class Dades implements InDades{
         }
         return llistaPaginaIncidencies;
     }
+    
+    public int mostraDia(){
+        return this.dia;
+    }
 }

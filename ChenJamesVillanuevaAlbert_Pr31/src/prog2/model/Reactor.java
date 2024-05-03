@@ -97,4 +97,11 @@ public class Reactor implements InComponent{
         }
         return output;
     }
+
+    @Override
+    public String toString() {
+        return "Reactor{" + "temperaturaReactor=" + temperaturaReactor + ", activat=" + activat + '}';
+    }
+    
+    
 }
