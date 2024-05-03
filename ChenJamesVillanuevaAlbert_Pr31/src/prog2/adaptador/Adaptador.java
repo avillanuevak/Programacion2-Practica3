@@ -53,17 +53,9 @@ public class Adaptador implements Serializable{
     public String mostrarEstatBombes() throws CentralUBException{
         return dades.mostraSistemaRefrigeracio().toString();
     }
+
     
-    /*
-    "Mostrar Estat Central",
-                                               "Mostrar Bitàcola", 
-                                               "Mostrar Incidències", 
-                                               "Finalitzar Dia", 
-                                               "Guardar Dades", 
-                                               "Carrega Dades", 
-    */
-    
-    public String mostrarEstatCentral(int potencia) throws CentralUBException{
+    public String mostrarEstatCentral(float potencia) throws CentralUBException{
         return dades.mostraEstat(potencia).toString();
     }
 
@@ -75,7 +67,6 @@ public class Adaptador implements Serializable{
     public String mostrarIncidencias () throws CentralUBException{
         return dades.mostraIncidencies().toString();
     }
-    public 
     
     /**
      * Mètode per guardar la classe EstacioTren

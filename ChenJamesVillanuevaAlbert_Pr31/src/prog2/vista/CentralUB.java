@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package prog2.vista;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +33,12 @@ public class CentralUB {
         variableNormal = new VariableNormal(VAR_NORM_MEAN, VAR_NORM_STD, VAR_NORM_SEED);
         demandaPotencia = generaDemandaPotencia();
         
-        // Afegir codi adicional si fos necessari:
-        this.adaptador = new Adaptador();
+        try {
+            // Afegir codi adicional si fos necessari:
+            this.adaptador = new Adaptador();
+        } catch (CentralUBException ex) {
+            System.out.println(ex.getMessage());
+        }
 
     }
     
@@ -114,12 +119,23 @@ public class CentralUB {
                     break;
                     
                 case OP8:
-                    adaptador.guardaDades(camiDesti);
+                    try{
+                        adaptador.guardaDades("CentralUB.dat");
+
+                    }catch (CentralUBException ex){
+                        System.out.println(ex.getMessage());
+                    }
                     break;
                     
                 case OP9:
-                    adaptador.carregaDades(camiOrigen);
+                    try{
+                        adaptador.carregaDades("CentralUB.dat");
+                    }catch (CentralUBException | IOException ex){
+                        System.out.println(ex.getMessage());
+                    }
+                    
                     break;
+
 
                 case OPSORTIR:
                     System.out.println("Sortint del menu principal");
