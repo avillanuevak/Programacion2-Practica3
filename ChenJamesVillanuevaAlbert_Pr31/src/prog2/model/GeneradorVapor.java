@@ -4,15 +4,23 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
 import prog2.vista.CentralUBException;
 
 /**
  *
  * @author Albert Villanueva
+ * El generador de vapor transmet el calor transportat
+ * pel sistema de refrigeraci ó (input) ns al circuit secundari (output) amb una
+ * determinada eficiència, xada en 0.8 al nostre cas. Es considera 30◦ la
+ * temperatura ambient.
  */
-public class GeneradorVapor implements InComponent{
+public class GeneradorVapor implements InComponent, Serializable{
     private boolean activat;
     
+    /**
+     *
+     */
     public GeneradorVapor(){}
     
     
@@ -24,6 +32,10 @@ public class GeneradorVapor implements InComponent{
         return activat;
     }
 
+    /**
+     *
+     * @param activat
+     */
     public void setActivat(boolean activat) {
         this.activat = activat;
     }

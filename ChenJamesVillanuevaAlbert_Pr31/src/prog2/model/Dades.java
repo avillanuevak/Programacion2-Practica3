@@ -4,24 +4,48 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import prog2.vista.CentralUBException;
 
 /**
  *
  * @author dortiz
+ * La classe Dades és la classe principal del paquet del model,
+ * atès que conté i gestiona totes les dades de l'aplicació. Els mètodes
+ * proveïts per Dades seran utilitzades per la classe Adaptador. No hauria de
+ * ser necessari crear mètodes addicionals dins de Dades a més del constructor,
+ * els mètodes de InDades i els mètodes de servei declarats al codi base:
+ * actualitzaEstat i actualitzaEconomia.
  */
-public class Dades implements InDades{
+public class Dades implements InDades, Serializable{
+
+    /**
+     *
+     */
     public final static long  VAR_UNIF_SEED = 123;
+
+    /**
+     *
+     */
     public final static float GUANYS_INICIALS = 0;
+
+    /**
+     *
+     */
     public final static float PREU_UNITAT_POTENCIA = 1;
+
+    /**
+     *
+     */
     public final static float PENALITZACIO_EXCES_POTENCIA = 200;
 
     // Afegir atributs:
     
     
     private VariableUniforme variableUniforme;
-    private int insercioBarres;
+    private float insercioBarres;
     private Reactor reactor;
     private SistemaRefrigeracio sistemaRefrigeracio;
     private GeneradorVapor generadorVapor;
@@ -30,7 +54,10 @@ public class Dades implements InDades{
     private int dia;
     private float guanysAcumulats;
     
-    
+    /**
+     *
+     * @throws CentralUBException
+     */
     public Dades() throws CentralUBException{
         // Inicialitza Atributs
         this.variableUniforme = new VariableUniforme(VAR_UNIF_SEED);
@@ -76,7 +103,7 @@ public class Dades implements InDades{
         beneficis = output * PREU_UNITAT_POTENCIA;
         
         /*Penalitzacio*/
-        if(output >= demandaPotencia) penalitzacio = PENALITZACIO_EXCES_POTENCIA;
+        if(output > demandaPotencia) penalitzacio = PENALITZACIO_EXCES_POTENCIA;
         
         /*Costos Operatius*/
         float costosOperatius = 0;
@@ -104,12 +131,26 @@ public class Dades implements InDades{
      * @param paginaIncidencies Pàgina d'incidències.
      */
     private void actualitzaEstatCentral(PaginaIncidencies paginaIncidencies) {
+        /*Establir nova temperatura del reactor*/
+        float novaTemp;
+        if(reactor.getTemperaturaReactor() - 250 * sistemaRefrigeracio.bombesActives() < 30f) novaTemp = 30f;
+        else{
+            novaTemp = reactor.getTemperaturaReactor() - 250 * sistemaRefrigeracio.bombesActives();
+            reactor.setTemperaturaReactor(novaTemp);
+        }
+
+        /*Revisar Components central*/
         reactor.revisa(paginaIncidencies);
         sistemaRefrigeracio.revisa(paginaIncidencies);
         generadorVapor.revisa(paginaIncidencies);
         turbina.revisa(paginaIncidencies);   
     }
     
+    /**
+     *
+     * @param demandaPotencia
+     * @return
+     */
     @Override
     public Bitacola finalitzaDia(float demandaPotencia) {
         // Actualitza economia
@@ -155,7 +196,8 @@ public class Dades implements InDades{
      */
     @Override
     public void setInsercioBarres(float insercioBarres) throws CentralUBException{
-        this.insercioBarres = (int) (float) insercioBarres;
+        this.insercioBarres = insercioBarres;
+        reactor.setInsercioBarres(insercioBarres);           
     }
      
     /**
@@ -213,7 +255,7 @@ public class Dades implements InDades{
      */
     @Override
     public SistemaRefrigeracio mostraSistemaRefrigeracio(){
-        return this.sistemaRefrigeracio;
+        return sistemaRefrigeracio;
     }
     
     /**
@@ -235,11 +277,14 @@ public class Dades implements InDades{
      */
     @Override
     public PaginaEstat mostraEstat(float demandaPotencia){
+        float outReactor = reactor.calculaOutput(getInsercioBarres());
+        float outRefrigeracio = sistemaRefrigeracio.calculaOutput(outReactor);
+        float outGeneradorVapor = generadorVapor.calculaOutput(outRefrigeracio);
+        float outTurbina = turbina.calculaOutput(outGeneradorVapor);
         
-        PaginaEstat paginaEstat = new PaginaEstat(dia, demandaPotencia, getInsercioBarres(), reactor.calculaOutput(getInsercioBarres()),
-                                sistemaRefrigeracio.calculaOutput(reactor.getTemperaturaReactor()),
-                                generadorVapor.calculaOutput(sistemaRefrigeracio.calculaOutput(reactor.calculaOutput(getInsercioBarres()))),
-                                turbina.calculaOutput(generadorVapor.calculaOutput(sistemaRefrigeracio.calculaOutput(reactor.calculaOutput(getInsercioBarres())))));
+        PaginaEstat paginaEstat = new PaginaEstat(dia, demandaPotencia, getInsercioBarres(), outReactor,
+                                outRefrigeracio, outGeneradorVapor, outTurbina);
+                                
         return paginaEstat;
     }
       
@@ -257,15 +302,23 @@ public class Dades implements InDades{
      * la central.
      * @return
      */
-    @Override
-    public List<PaginaIncidencies> mostraIncidencies(){
-        List<PaginaIncidencies> llistaPaginaIncidencies = null;
-        for(PaginaIncidencies pi : bitacola.getIncidencies()){
-            llistaPaginaIncidencies.add(pi);
+@Override
+    public List<PaginaIncidencies> mostraIncidencies() {
+        List<PaginaIncidencies> llistaPaginaIncidencies = new ArrayList<>(); 
+        if (bitacola.getIncidencies() == null) return llistaPaginaIncidencies;
+        else {
+            for (PaginaIncidencies pi : bitacola.getIncidencies()) {
+                llistaPaginaIncidencies.add(pi);
+            }
         }
+
         return llistaPaginaIncidencies;
     }
     
+    /**
+     *
+     * @return
+     */
     public int mostraDia(){
         return this.dia;
     }

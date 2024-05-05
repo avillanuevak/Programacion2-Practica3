@@ -3,22 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package prog2.vista;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import prog2.adaptador.Adaptador;
 
 /**
  *
  * @author dortiz
+ * CentralUB: aquesta classe dona accés a tota la funcionalitat
+ * de la central nuclear. Es proporciona només el codi amb algunes constants i
+ * la funcionalitat necessària per a nalitzar un dia i obtenir de manera
+ * aleatòria la demanda de potència elèctrica del següent.
  */
-public class CentralUB {
+public class CentralUB implements Serializable{
+
+
     public final static float DEMANDA_MAX = 1600;
     public final static float DEMANDA_MIN = 200;
     public final static float VAR_NORM_MEAN = 1000;
     public final static float VAR_NORM_STD = 600;
     public final static long VAR_NORM_SEED = 123;
+    
     
     /** Generador aleatori de la demanda de potència **/
     private VariableNormal variableNormal;
@@ -29,6 +34,11 @@ public class CentralUB {
     /*Variable de classe adaptador*/
     private Adaptador adaptador;
     /* Constructor*/
+
+    /**
+     *
+     */
+
     public CentralUB() {
         variableNormal = new VariableNormal(VAR_NORM_MEAN, VAR_NORM_STD, VAR_NORM_SEED);
         demandaPotencia = generaDemandaPotencia();
@@ -45,10 +55,10 @@ public class CentralUB {
     public void gestioCentralUB() {
         // Mostrar missatge inicial
         System.out.println("Benvingut a la planta PWR de la UB");
-        System.out.println("La demanda de potència elèctrica avui es de " + demandaPotencia + " unitats");
+        System.out.println("La demanda de potencia electrica avui es de " + demandaPotencia + " unitats");
 
         // Completar
-        System.out.println("*****Menu d'opcions*****");
+        System.out.println("MENU PRINCIPAL");
         
         Scanner sc = new Scanner(System.in);
         enum MenuPrincipal{OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OPSORTIR}
@@ -56,12 +66,12 @@ public class CentralUB {
         Menu<MenuPrincipal> menu = new Menu<>("MENU PRINCIPAL",opcionsPrincipals); //Defineix el menu amb el nom d'estacio i l'array d'opcions
         
         String[] descripcionsPrincipal = {
-                                               "Gestió Barres de Control",
-                                               "Gestió Reactor",
-                                               "Gestió Sistema Refrigeració", 
+                                               "Gestio Barres de Control",
+                                               "Gestio Reactor",
+                                               "Gestio Sistema Refrigeracio", 
                                                "Mostrar Estat Central",
-                                               "Mostrar Bitàcola", 
-                                               "Mostrar Incidències", 
+                                               "Mostrar Bitacola", 
+                                               "Mostrar Incidencies", 
                                                "Finalitzar Dia", 
                                                "Guardar Dades", 
                                                "Carrega Dades", 
@@ -91,7 +101,7 @@ public class CentralUB {
                     
                 case OP4:
                     try{
-                        System.out.println(adaptador.mostrarEstatCentral(generaDemandaPotencia()));
+                        System.out.println(adaptador.mostrarEstatCentral(demandaPotencia));
                     }catch (CentralUBException ex) {
                         System.out.println(ex.getMessage());
                     }
@@ -115,7 +125,6 @@ public class CentralUB {
                     
                 case OP7:
                     finalitzaDia();
-                    System.out.println("Dia Finalitzat");       
                     break;
                     
                 case OP8:
@@ -130,12 +139,11 @@ public class CentralUB {
                 case OP9:
                     try{
                         adaptador.carregaDades("CentralUB.dat");
-                    }catch (CentralUBException | IOException ex){
+                    }catch (CentralUBException ex){
                         System.out.println(ex.getMessage());
                     }
                     
                     break;
-
 
                 case OPSORTIR:
                     System.out.println("Sortint del menu principal");
@@ -147,8 +155,8 @@ public class CentralUB {
     public void subMenuBarres(Scanner sc){
         enum MenuSecundari{OP1, OP2, OPSORTIR}
         MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
-        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
-        String[] descripcionsBarres={"Obtenir Insersió Barres", "Establir Inserció Barres", "Sortir"};
+        Menu<MenuSecundari> menu = new Menu<>("MENU DE BARRES DE CONTROL",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        String[] descripcionsBarres={"Obtenir Insersio Barres", "Establir Insercio Barres", "Sortir"};
         menu.setDescripcions(descripcionsBarres);
         MenuSecundari op;
 
@@ -162,28 +170,44 @@ public class CentralUB {
                     break;
                     
                 case OP2:
-                    System.out.println("Dime el porcentaje que quieres insertar");
-                    float insertar = sc.nextFloat();
-                
-                    try {
-                        adaptador.insertarBarres(insertar);
-                    } catch (CentralUBException ex) {
+                    System.out.println("Entra el percentatge d'insercio de barres (0 - 100):");
+                    float insercioBarres = sc.nextFloat();
+                    
+                    if(insercioBarres == 100){
+                        try {
+                            adaptador.insertarBarres(insercioBarres);
+                            adaptador.desactivarReactor();
+                            System.out.println("Reaccio nuclear aturada per insecio de barres del 100%");
+                            break;
+                        } catch (CentralUBException ex) {
+                            ex.getMessage();
+                        }
+                    }else{
+                        try {
+                        adaptador.insertarBarres(insercioBarres);
+                        break;
+                        } catch (CentralUBException ex) {
                         System.out.println(ex.getMessage());
+                        }
                     }
                     break;
                     
                  case OPSORTIR:
-                    System.out.println("Sortint del menu principal");
+                    System.out.println("Sortint al menu principal");
                     break;
             }
         }while(op != MenuSecundari.OPSORTIR);
 
     }
     
+    /**
+     *
+     * @param sc
+     */
     public void subMenuReactor(Scanner sc){
         enum MenuSecundari{OP1, OP2, OP3, OPSORTIR}
         MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
-        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        Menu<MenuSecundari> menu = new Menu<>("MENU DE REACTOR",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
         String[] descripcionsReactor={"Activar Reactor", "Desactivar Reactor", "Mostrar Estat", "Sortir"};
         menu.setDescripcions(descripcionsReactor);
         MenuSecundari op;
@@ -223,18 +247,22 @@ public class CentralUB {
                     break;                    
                     
                  case OPSORTIR:
-                    System.out.println("Sortint del menu principal");
+                    System.out.println("Sortint al menu principal");
                     break;
             }
         }while(op != MenuSecundari.OPSORTIR);
 
     }
     
-        public void subMenuRefrigeracio(Scanner sc){
+    /**
+     *
+     * @param sc
+     */
+    public void subMenuRefrigeracio(Scanner sc){
         enum MenuSecundari{OP1, OP2, OP3, OPSORTIR}
         MenuSecundari[] opcionsSecundaris = MenuSecundari.values(); //Converteix l'enum en un array de constants
-        Menu<MenuSecundari> menu = new Menu<>("MENU SECUNDARIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
-        String[] descripcionsRefrigeracio={"Activar Bomba", "Desactivar Bomba", "Mostrar Estat", "Sortir"};
+        Menu<MenuSecundari> menu = new Menu<>("MENU DE REFRIGERACIO",opcionsSecundaris); //Defineix el menu amb el nom d'estacio i l'array d'opcions
+        String[] descripcionsRefrigeracio={"Activar Bomba", "Desactivar Bomba ", "Mostrar Estat", "Sortir"};
         menu.setDescripcions(descripcionsRefrigeracio);
         MenuSecundari op;
         int numero;
@@ -247,10 +275,10 @@ public class CentralUB {
             switch(op){
                 case OP1:
                     try {
-                        
+                        System.out.println("Entra numero de la bomba (0-3):");
                         numero = sc.nextInt();
                         adaptador.activarBomba(numero);
-                        System.out.println("Bomba " + numero +" Activat");
+                        System.out.println("Bomba " + numero +" Activada");
                         
                     } catch (CentralUBException ex) {
                         System.out.println(ex.getMessage());
@@ -259,9 +287,10 @@ public class CentralUB {
                     
                 case OP2:
                     try {
+                        System.out.println("Entra numero de la bomba (0-3):");
                         numero = sc.nextInt();
                         adaptador.desactivarBomba(numero);
-                        System.out.println("Bomba "+ numero + " Desactivat");
+                        System.out.println("Bomba "+ numero + " Desactivada");
                         
                     } catch (CentralUBException ex) {
                         System.out.println(ex.getMessage());
@@ -278,7 +307,7 @@ public class CentralUB {
                     break;                    
                     
                  case OPSORTIR:
-                    System.out.println("Sortint del menu principal");
+                    System.out.println("Sortint al menu principal");
                     break;
             }
         }while(op != MenuSecundari.OPSORTIR);
@@ -298,13 +327,12 @@ public class CentralUB {
     
     private void finalitzaDia() {
         // Finalitzar dia i imprimir informacio de la central
-        String info = new String();
-        info = adaptador.finalitzaDia(demandaPotencia);
+        String info = adaptador.finalitzaDia(demandaPotencia);
         System.out.println(info);
         System.out.println("Dia finalitzat\n");
         
         // Generar i mostrar nova demanda de potencia
         demandaPotencia = generaDemandaPotencia();
-        System.out.println("La demanda de potència elèctrica avui es de " + demandaPotencia + " unitats");
+        System.out.println("La demanda de potencia electrica avui es de " + demandaPotencia + " unitats");
     }
 }

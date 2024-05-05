@@ -4,15 +4,32 @@
  */
 package prog2.vista;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 /**
  *
  * @author Albert Villanueva
+ * Conté la classe principal de l'aplicació i està
+ * ubicada al paquet prog2.vista. Declara un objecte de la classe CentralUB i
+ * crida a mètode gestioCentralUB esmentat anteriorment.
  */
-public class IniciadorCentralUB {
+public class IniciadorCentralUB implements Serializable{
     
-    public static void main(String[] args){
-
-}
+    /**
+     *
+     * @param args
+     * @throws CentralUBException
+     * @throws IOException
+     */
+    public static void main(String[] args)throws CentralUBException, IOException{
+        
+        // Crea un objecte centralUB
+        CentralUB centralUB = new CentralUB();
+        
+        // Comença la gestió de la centralUB
+        centralUB.gestioCentralUB();
+    }
 }
 
 

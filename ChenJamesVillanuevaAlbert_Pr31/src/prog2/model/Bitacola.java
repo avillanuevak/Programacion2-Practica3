@@ -4,25 +4,45 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Albert Villanueva
+ * La classe Bitacola ha de denir un atribut de tipus
+ * ArrayList per guardar objectes de tipus PaginaBitacola. A més, la classe ha
+ * d'implementar la interfície InBitacola i denir el mètode toString que generi
+ * una representació com a String de totes les pàgines de la bitàcola separades
+ * per salts de línia ('\n').
  */
-public class Bitacola implements InBitacola{
+public class Bitacola implements InBitacola, Serializable{
     
+    /**
+     *
+     */
     public ArrayList<PaginaBitacola> llistaPaginaBitacola;
     
+    /**
+     *
+     */
     public Bitacola(){
         this.llistaPaginaBitacola = new ArrayList<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<PaginaBitacola> getLlistaPaginaBitacola() {
         return llistaPaginaBitacola;
     }
 
+    /**
+     *
+     * @param llistaPaginaBitacola
+     */
     public void setLlistaPaginaBitacola(ArrayList<PaginaBitacola> llistaPaginaBitacola) {
         this.llistaPaginaBitacola = llistaPaginaBitacola;
     }
@@ -43,14 +63,21 @@ public class Bitacola implements InBitacola{
      * @return 
      */
     @Override
-    public List<PaginaIncidencies> getIncidencies(){
-        List<PaginaIncidencies> llistaIncidencies = null;
-        for(PaginaBitacola pb : getLlistaPaginaBitacola()){
-            if(pb instanceof PaginaIncidencies) llistaIncidencies.add((PaginaIncidencies) pb);
+    public List<PaginaIncidencies> getIncidencies() {
+        List<PaginaIncidencies> llistaIncidencies = new ArrayList<>();
+
+        for (PaginaBitacola pb : getLlistaPaginaBitacola()) {
+            if (pb instanceof PaginaIncidencies) {
+                llistaIncidencies.add((PaginaIncidencies) pb);
+            }
         }
         return llistaIncidencies;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString(){
         String bitacolaString = "";

@@ -4,15 +4,27 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Albert Villanueva
+ * Aquesta classe també hereta de PaginaBitacola i ha
+ * de tenir el atributs necessaris segons el que es va a explicar a l'Apartat
+ * 2.4.1. El atributs s'han d'inicialitzar usant el constructor.
  */
-public class PaginaEconomica extends PaginaBitacola{
+public class PaginaEconomica extends PaginaBitacola implements Serializable{
     private int dia;
     private float beneficis, costOperatiu, penalitzacioExcessProduccio, guanysAcumulats;
     
-
+    /**
+     *
+     * @param dia
+     * @param beneficis
+     * @param costOperatiu
+     * @param penalitzacioExcessProduccio
+     * @param guanysAcumulats
+     */
     public PaginaEconomica(int dia, float beneficis, float costOperatiu, float penalitzacioExcessProduccio, float guanysAcumulats){
         this.dia = dia;
         this.beneficis = beneficis;
@@ -21,34 +33,58 @@ public class PaginaEconomica extends PaginaBitacola{
         this.guanysAcumulats = guanysAcumulats;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDia() {
         return dia;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getBeneficis() {
         return beneficis;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getCostOperatiu() {
         return costOperatiu;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getPenalitzacioExcessProduccio() {
         return penalitzacioExcessProduccio;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getGuanysAcumulats() {
         return guanysAcumulats;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString(){
         return """
                # Pagina Economica
                - Dia: """ + getDia() +
-               "- Beneficis: " + getBeneficis() + " Unitats Economiques" +
-               "- Penalitzacio Excess Produccio: " + getPenalitzacioExcessProduccio() + " Unitats Economiques" +
-               "- Cost Operatiu: " + getCostOperatiu() + " Unitats Economiques" +
-               "- Guanys Acumulats: " + getGuanysAcumulats() + " Unitats Economiques\n";
+               "\n- Beneficis: " + getBeneficis() + " Unitats Economiques" +
+               "\n- Penalitzacio Excess Produccio: " + getPenalitzacioExcessProduccio() + " Unitats Economiques" +
+               "\n- Cost Operatiu: " + getCostOperatiu() + " Unitats Economiques" +
+               "\n- Guanys Acumulats: " + getGuanysAcumulats() + " Unitats Economiques\n";
     }
 }

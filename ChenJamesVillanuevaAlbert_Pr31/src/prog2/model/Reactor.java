@@ -4,35 +4,72 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
 import prog2.vista.CentralUBException;
 
 /**
  *
- * @author Albert
+ * @author Albert Villanueva
+ * El reactor rep com a input el grau d'inserció de
+ * les barres de control en percentatge i genera com a output una determinada
+ * quantitat de graus Celsius que es transmet a l'aigua del circuit primari.
  */
-public class Reactor implements InComponent{
+public class Reactor implements InComponent, Serializable{
     
     private float temperaturaReactor;
     private boolean activat;
-    
-    public Reactor(){}
+    private float insercioBarres;
     
     /**
-     * Getter i setter de temperatura reactor
-     * @return 
+     *
+     */
+    public Reactor(){}
+
+    /**
+     * Getters i setters de les variables de reactor
+     * 
+     * @param temperaturaReactor
+     */
+    public void setTemperaturaReactor(float temperaturaReactor) {
+        this.temperaturaReactor = temperaturaReactor;
+    }
+    
+    /**
+     *
+     * @return
      */
     public float getTemperaturaReactor() {
         return temperaturaReactor;
     }
 
-    public void setTemperaturaReactor(float temperaturaReactor) {
-        this.temperaturaReactor = temperaturaReactor;
+    /**
+     *
+     * @return
+     */
+    public float getInsercioBarres() {
+        return insercioBarres;
     }
 
+    /**
+     *
+     * @param insercioBarres
+     */
+    public void setInsercioBarres(float insercioBarres) {
+        this.insercioBarres = insercioBarres;
+    }
+    
+    /**
+     *
+     * @return
+     */
     public boolean isActivat() {
         return activat;
     }
 
+    /**
+     *
+     * @param activat
+     */
     public void setActivat(boolean activat) {
         this.activat = activat;
     }
@@ -45,7 +82,12 @@ public class Reactor implements InComponent{
      */
     @Override
     public void activa() throws CentralUBException{
-        this.activat = this.getTemperaturaReactor() <= 1000f;
+        if(getTemperaturaReactor() > 1000f){
+            throw new CentralUBException("Error: No es pot activar el reactor mentre tingui una temperatura superior a 1000 graus.");        
+        }
+        else{
+            setActivat(true);
+        }
     }
     
     /**
@@ -53,7 +95,7 @@ public class Reactor implements InComponent{
      */
     @Override
     public void desactiva(){
-        this.activat = this.temperaturaReactor <= 1000f;
+        setActivat(false);
     }
     /**
      * Revisa el component. Com a resultat de la revisió, podria podria sorgir 
@@ -62,9 +104,10 @@ public class Reactor implements InComponent{
      */
     @Override
     public void revisa (PaginaIncidencies p){
-        if(this.getTemperaturaReactor() > 1000f){
+        if(calculaOutput(insercioBarres) > 1000f){
             this.desactiva();
-            p.afegeixIncidencia("Reactor: Activat = " + this.isActivat() + ", Temperatura: " + this.getTemperaturaReactor());
+            p.afegeixIncidencia("Reactor: Activat = " + isActivat() + ", Temperatura: " + getTemperaturaReactor() + ", Insercio Barres = " + 
+                    getInsercioBarres());
         }
     }
     
@@ -85,23 +128,30 @@ public class Reactor implements InComponent{
     /**
      * Calcula l'output del component donat l'input. La manera de calcular
      * l'output està descrita a la Figura 2 de l'enunciat de la pràctica.
-     * @param input Input que rep el component.
+     * @param input Input que rep el component. Grau d'insercio barres
      * @return
      */
     @Override
     public float calculaOutput(float input){
+        if(0f > input || 100f < input) try {
+            throw new CentralUBException("Error: El grau d'insercio de barres ha de ser un percentatge entre 0 i 100.");
+        } catch (CentralUBException ex) {
+            ex.getMessage();
+        }
         float output;
-        if(!this.isActivat()) output = this.getTemperaturaReactor();
+        if(!this.isActivat()) output = getTemperaturaReactor();
         else{
-            output = (this.getTemperaturaReactor() + (100 - input) * 10);
+            output = (getTemperaturaReactor() + (100 - input) * 10);
         }
         return output;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
-        return "Reactor{" + "temperaturaReactor=" + temperaturaReactor + ", activat=" + activat + '}';
-    }
-    
-    
+        return "Reactor:" + " Insercio de barres=" + getInsercioBarres() + ", TemperaturaReactor=" + getTemperaturaReactor() + ", Activat=" + isActivat();
+    }       
 }

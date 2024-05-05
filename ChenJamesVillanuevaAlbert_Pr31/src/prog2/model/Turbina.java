@@ -4,16 +4,27 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
 import prog2.vista.CentralUBException;
 
 /**
  *
  * @author Albert
+ * La turbina converteix els graus del generador de vapor en
+ * unitats de potència. Això només es podrà fer si la temperatura generada com a
+ * output pel generador de vapor es superior a 100 graus (la temperatura de
+ * vaporització de l'aigua).
  */
-public class Turbina implements InComponent{
+public class Turbina implements InComponent, Serializable{
     
+    /**
+     *
+     */
     public boolean activat;
     
+    /**
+     *
+     */
     public Turbina(){}
     
     
@@ -25,6 +36,10 @@ public class Turbina implements InComponent{
         return activat;
     }
 
+    /**
+     *
+     * @param activat
+     */
     public void setActivat(boolean activat) {
         this.activat = activat;
     }

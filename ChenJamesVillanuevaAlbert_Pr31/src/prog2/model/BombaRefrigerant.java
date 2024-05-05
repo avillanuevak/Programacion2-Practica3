@@ -4,18 +4,29 @@
  */
 package prog2.model;
 
+import java.io.Serializable;
 import prog2.vista.CentralUBException;
 
 /**
  *
  * @author Albert Villanueva
+ * La classe BombaRefrigerant ha d'implementar la
+ * interfície InBombaRefrigerant. Cada bomba refrigerant ha de tenir un identi
+ * cador numèric i dos booleans per indicar si està activada o no i si està fora
+ * de servei. El constructor de la classe ha de rebre l'identicador i un
+ * objecte de tipus VariableUniforme.
  */
-public class BombaRefrigerant implements InBombaRefrigerant{
+public class BombaRefrigerant implements InBombaRefrigerant, Serializable{
     
     private final VariableUniforme variableUniforme;
     private final int id;
     private boolean activada, foraDeServei;
     
+    /**
+     *
+     * @param variableUniforme
+     * @param id
+     */
     public BombaRefrigerant(VariableUniforme variableUniforme, int id){
         this.variableUniforme = variableUniforme;
         this.id = id;
@@ -38,7 +49,7 @@ public class BombaRefrigerant implements InBombaRefrigerant{
      */
     @Override
     public void activa() throws CentralUBException{
-        if(foraDeServei){
+        if(!foraDeServei){
             if(activada) throw new CentralUBException("Error: La bomba que s'intenta activar ja esta activada.");
             else{
                 this.activada = true;
@@ -55,7 +66,6 @@ public class BombaRefrigerant implements InBombaRefrigerant{
     @Override
     public void desactiva(){
         if(activada) this.activada = false;
-        
     }
     
     /**
@@ -79,7 +89,7 @@ public class BombaRefrigerant implements InBombaRefrigerant{
     public void revisa (PaginaIncidencies p){
         if(variableUniforme.seguentValor() < 20){
             desactiva();
-            p.afegeixIncidencia("Bomba refrigerant. ID: " + this.getId() + "     Activada: " + this.getActivat() + "     En servei: " + this.getForaDeServei());
+            p.afegeixIncidencia("Bomba refrigerant. ID: " + getId() + ", Activada: " + getActivat() + ", En servei: " + getForaDeServei());
         }
     }
     
@@ -92,8 +102,12 @@ public class BombaRefrigerant implements InBombaRefrigerant{
         return foraDeServei;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString(){
-        return "Bomba Refrigerant: Id = " + this.getId() + ", Activitat = " + this.getActivat() + ", Fora de servei = " + this.getForaDeServei();
+        return "- Bomba Refrigerant: Id = " + this.getId() + ", Activitat = " + this.getActivat() + ", Fora de servei = " + this.getForaDeServei() + "\n";
     }
 }

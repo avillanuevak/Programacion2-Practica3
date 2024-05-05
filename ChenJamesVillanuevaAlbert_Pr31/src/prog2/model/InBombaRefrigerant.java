@@ -47,4 +47,5 @@ public interface InBombaRefrigerant {
      * Retorna true si la bomba refrigerant està fora de servei.
      */
     public boolean getForaDeServei();
+    
 }
