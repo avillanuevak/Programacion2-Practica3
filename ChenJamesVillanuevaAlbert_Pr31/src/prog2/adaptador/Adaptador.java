@@ -15,7 +15,7 @@ import java.io.Serializable;
 import prog2.vista.CentralUBException;
 import prog2.model.*;
 /**
- *{@link <Adaptador> [La classe Adaptador és el mediador entre la vista i el model.
+    [La classe Adaptador és el mediador entre la vista i el model.
  * Concretament, conecta la classe Dades del model i la classe CentralUB de la vista.
  * Aquesta classe també conté els mètodes de persistència de dades.]}
  * 
